@@ -6,17 +6,35 @@ public class Filme {
     private String descricao;
     private String genero;
     private int duracao;
-    private List<String> sessoes;  // Sessões disponíveis para cada filme
+    private List<String> sessoes; // Sessões disponíveis para cada filme
+    private boolean filme3D;
 
-    public Filme(String nome, String diretor, String descricao, String genero, int duracao, List<String> sessoes) {
+    // Construtor que inclui a informação sobre filme 3D
+    public Filme(String nome, String diretor, String descricao, String genero, int duracao, List<String> sessoes, boolean filme3D) {
         this.nome = nome;
         this.diretor = diretor;
         this.descricao = descricao;
         this.genero = genero;
         this.duracao = duracao;
         this.sessoes = sessoes;
+        this.filme3D = filme3D;
     }
 
+
+    public Filme(String nome, String diretor, String descricao, String genero, int duracao, List<String> sessoes) {
+        this(nome, diretor, descricao, genero, duracao, sessoes, false); // Define filme3D como falso por padrão
+    }
+
+
+    public boolean isFilme3D() {
+        return filme3D;
+    }
+
+    public void setFilme3D(boolean filme3D) {
+        this.filme3D = filme3D;
+    }
+
+    // Getters para outros atributos
     public String getNome() {
         return nome;
     }
@@ -46,9 +64,10 @@ public class Filme {
     public String toString() {
         return nome + "\n" +
                 "Diretor: " + diretor + "\n" +
-                "Descrição: " + descricao + "\n" +
+                "Descrição: " + descricao + " \n" +
                 "Gênero: " + genero + "\n" +
                 "Duração: " + duracao + " minutos\n" +
-                "Sessões: " + String.join(", ", sessoes);
+                "Sessões: " + String.join(", ", sessoes) +
+                (filme3D ? "\n[Filme 3D]" : "");
     }
 }
