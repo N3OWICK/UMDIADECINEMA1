@@ -1,6 +1,6 @@
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.List;
+import java.util.Scanner;
 
 public class UmdiadeCinema {
 
@@ -10,34 +10,27 @@ public class UmdiadeCinema {
         // Lista de filmes (alguns com suporte a 3D)
         Filme[] filmes = {
                 new Filme("Nem Que a Vaca Tussa", "Will Finn",
-                        "A fazenda Caminho do Paraíso está em pânico, pois uma ação de despejo ameaça acabar com o local...",
+                        "A fazenda Caminho do Paraíso está em pânico, pois uma ação de despejo ameaça acabar com o local... ",
                         "Aventura, Animação, Comédia", 76, Arrays.asList("10:00", "14:00", "18:00"), false),
 
                 new Filme("Matrix", "Lana Wachowski, Lilly Wachowski",
                         "Em um futuro próximo, Thomas Anderson (Keanu Reeves), um jovem programador...",
-                        "Ação, Ficção científica", 136, Arrays.asList("11:00", "15:00", "19:00"), true),
+                        "Ação, Ficção científica", 136, Arrays.asList("11:00", "15:00", "19:00"), true), // Filme 3D
 
                 new Filme("A Nova Onda do Imperador", "Mark Dindal",
                         "Em um reino mítico e rodeado de montanhas, o jovem e arrogante Imperador Kuzco...",
                         "Aventura, Animação, Comédia", 78, Arrays.asList("12:00", "16:00", "20:00"), false)
         };
 
-        // Preços dos ingressos
-        double precoInteiroComum = 32.00;
-        double precoMeiaComum = 16.00;
-        double precoInteiroVip = 48.00; // Dobro do comum
-        double precoMeiaVip = 24.00;    // Dobro do comum
-
-        // Exibir filmes disponíveis com descrição e tempo
+        // Exibir filmes disponíveis com descrição, tempo e gênero
         System.out.println("Escolha um filme:");
         for (int i = 0; i < filmes.length; i++) {
             Filme filme = filmes[i];
-            System.out.printf("%d. %s (Duração: %d minutos)\n   Descrição: %s\n%s\n",
-                    (i + 1),
-                    filme.getNome(),
-                    filme.getDuracao(),
-                    filme.getDescricao(),
-                    filme.isFilme3D() ? "   [3D]" : "");
+            System.out.printf("%d. %s (Duração: %d minutos)\n", (i + 1), filme.getNome(), filme.getDuracao());
+            System.out.println("   Descrição: " + filme.getDescricao());
+            System.out.println("   Gênero: " + filme.getGenero());
+            System.out.println(filme.isFilme3D() ? "   [3D]" : "");
+            System.out.println();
         }
 
         System.out.print("\nDigite o número do filme escolhido: ");
@@ -86,26 +79,21 @@ public class UmdiadeCinema {
         System.out.print("Digite a quantidade de ingressos meia entrada: ");
         int meiaEntrada = scanner.nextInt();
 
-        // Calcular o valor total
-        double total = 0;
+        // Criar o ingresso de acordo com o tipo escolhido (Comum ou VIP)
+        Ingresso ingresso;
+
         if (tipoIngresso == 1) { // Comum
             if (filme.isFilme3D()) {
                 System.out.println("Ingressos comuns não podem ser comprados para filmes 3D. Escolha um VIP.");
                 return;
             }
-            total = (ingressosInteiros * precoInteiroComum) + (meiaEntrada * precoMeiaComum);
+            ingresso = new Ingresso(filme, "comum", sessao, ingressosInteiros + meiaEntrada); // Ingresso comum
         } else { // VIP
-            total = (ingressosInteiros * precoInteiroVip) + (meiaEntrada * precoMeiaVip);
+            ingresso = new IngressoVip(filme, "vip", sessao, ingressosInteiros + meiaEntrada); // Ingresso VIP
         }
 
         // Exibir resumo e total
-        System.out.println("\nResumo da Compra:");
-        System.out.println("Filme: " + filme.getNome());
-        System.out.println("Sessão: " + sessao);
-        System.out.println("Tipo de ingresso: " + (tipoIngresso == 1 ? "Comum" : "VIP"));
-        System.out.println("Ingressos inteiros: " + ingressosInteiros);
-        System.out.println("Ingressos meia entrada: " + meiaEntrada);
-        System.out.printf("Total a pagar: R$ %.2f\n", total);
+        ingresso.exibirResultado();
 
         // Mensagem sobre a lanchonete
         if (tipoIngresso == 2 || filme.isFilme3D()) {

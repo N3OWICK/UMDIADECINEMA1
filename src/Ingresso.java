@@ -1,11 +1,14 @@
 public class Ingresso {
-    private Filme filme;
+    private Filme filme; // Atributo privado para encapsulamento
     private String tipoIngresso; // Inteira ou Meia
-    private String sessao;
-    private int quantidade;
+    protected String sessao; // Acessível para subclasses
+    protected int quantidade;
 
     public Ingresso(Filme filme, String tipoIngresso, String sessao, int quantidade) {
-        setFilme(filme); // Aplica a regra de filme comum aqui
+        if (filme != null && !filme.validarFilmeParaIngresso(this)) {
+            throw new IllegalArgumentException("Filme inválido para o tipo de ingresso.");
+        }
+        this.filme = filme;
         this.tipoIngresso = tipoIngresso;
         this.sessao = sessao;
         this.quantidade = quantidade;
@@ -16,8 +19,8 @@ public class Ingresso {
     }
 
     public void setFilme(Filme filme) {
-        if (filme.isFilme3D()) {
-            System.out.println("Ingressos comuns não podem ser vinculados a filmes 3D.");
+        if (filme != null && !filme.validarFilmeParaIngresso(this)) {
+            System.out.println("Filme não permitido para este tipo de ingresso.");
         } else {
             this.filme = filme;
         }
@@ -37,9 +40,7 @@ public class Ingresso {
         System.out.println("=== Resumo da Compra ===");
         System.out.println("Filme: " + (filme != null ? filme.getNome() : "Nenhum filme selecionado"));
         System.out.println("Sessão: " + sessao);
-        System.out.println("Tipo de ingresso: " + tipoIngresso);
         System.out.println("Quantidade: " + quantidade);
-        System.out.println("Total a pagar: R$ " + total);
+        System.out.printf("Total a pagar: R$ %.2f\n", total);
     }
 }
-

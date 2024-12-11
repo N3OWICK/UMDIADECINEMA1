@@ -1,23 +1,12 @@
 public class IngressoVip extends Ingresso {
-
     public IngressoVip(Filme filme, String tipoIngresso, String sessao, int quantidade) {
         super(filme, tipoIngresso, sessao, quantidade);
     }
 
     @Override
-    public void setFilme(Filme filme) {
-        // Ingressos VIP aceitam apenas filmes 3D
-        if (!filme.isFilme3D()) {
-            System.out.println("Ingressos VIPs só podem ser vinculados a filmes 3D.");
-        } else {
-            super.setFilme(filme);
-        }
-    }
-
-    @Override
     public double calcularTotal() {
-        double precoBase = super.calcularTotal();
-        return precoBase * 2; // Preço dobrado para VIP
+        // Preço VIP é o dobro do ingresso comum
+        return super.calcularTotal() * 2;
     }
 
     @Override
@@ -30,8 +19,8 @@ public class IngressoVip extends Ingresso {
         double total = calcularTotal();
         System.out.println("=== Resumo da Compra VIP ===");
         System.out.println("Filme: " + (getFilme() != null ? getFilme().getNome() : "Nenhum filme selecionado"));
-        System.out.println("Sessão: " + getFilme());
-        System.out.println("Tipo de ingresso: VIP");
-        System.out.println("Total a pagar: R$ " + total);
+        System.out.println("Sessão: " + sessao);
+        System.out.println("Quantidade: " + quantidade);
+        System.out.printf("Total a pagar: R$ %.2f\n", total);
     }
 }
